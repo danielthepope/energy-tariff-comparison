@@ -147,6 +147,6 @@ const chart = new Chart(ctx, {
     }
 });
 
-document.querySelectorAll('input[inputmode=numeric]').forEach(e => e.addEventListener('keyup', numericValidate));
-document.querySelectorAll('input[inputmode=numeric]').forEach(e => e.addEventListener('keyup', processForm));
+document.querySelectorAll('input[inputmode=decimal]').forEach(e => e.addEventListener('keyup', numericValidate));
+document.querySelectorAll('input[inputmode=decimal]').forEach(e => e.addEventListener('keyup', processForm));
 processForm();
