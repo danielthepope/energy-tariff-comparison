@@ -20,13 +20,21 @@ function processForm(_) {
     }
 
     const breakEven = (currentStandingCharge - alternativeStandingCharge) / (alternativeUnitRate - currentUnitRate);
-    document.getElementById('result-text').innerHTML = `The break even point is <strong>${breakEven.toFixed(2)}</strong> kWh.`;
 
-    if (!isNaN(averageUsage)) {
-        if (breakEven < averageUsage) {
-            document.getElementById('result-text').innerHTML += ' Since you use more energy than the break-even point, the new tariff works out better for you.';
+    if (breakEven <= 0) {
+        if (alternativeUnitRate < currentUnitRate) {
+            document.getElementById('result-text').innerHTML = 'No matter how much you use, the alternative tariff works out cheaper.';
         } else {
-            document.getElementById('result-text').innerHTML += ' Since you use less energy than the break-even point, your current tariff works out better for you.';
+            document.getElementById('result-text').innerHTML = 'No matter how much you use, your current tariff works out cheaper.';
+        }
+    } else {
+        document.getElementById('result-text').innerHTML = `The break even point is <strong>${breakEven.toFixed(2)}</strong> kWh.`;
+        if (!isNaN(averageUsage)) {
+            if (alternativeStandingCharge + (averageUsage * alternativeUnitRate) < currentStandingCharge + (averageUsage * currentUnitRate)) {
+                document.getElementById('result-text').innerHTML += ' Given your average usage, the alternative tariff works out cheaper.';
+            } else {
+                document.getElementById('result-text').innerHTML += ' Given your average usage, your current tariff works out cheaper.';
+            }
         }
     }
 
@@ -37,33 +45,37 @@ function updateChart(currentStandingCharge, breakEven, currentUnitRate, averageU
     if (isNaN(averageUsage)) {
         averageUsage = 0;
     }
-    const currentPoints = [{
-        x: 0,
-        y: currentStandingCharge
-    }, {
-        x: breakEven,
-        y: currentStandingCharge + (breakEven * currentUnitRate)
-    }, {
-        x: averageUsage,
-        y: currentStandingCharge + (averageUsage * currentUnitRate)
-    }, {
-        x: (averageUsage + breakEven) * 3,
-        y: currentStandingCharge + ((averageUsage + breakEven) * 3 * currentUnitRate)
-    }];
+    const currentPoints = [
+        {
+            x: 0,
+            y: currentStandingCharge
+        }, {
+            x: breakEven,
+            y: currentStandingCharge + (breakEven * currentUnitRate)
+        }, {
+            x: averageUsage,
+            y: currentStandingCharge + (averageUsage * currentUnitRate)
+        }, {
+            x: (averageUsage + breakEven) * 3,
+            y: currentStandingCharge + ((averageUsage + breakEven) * 3 * currentUnitRate)
+        }
+    ];
     currentPoints.sort(p => p.x);
-    const alternativePoints = [{
-        x: 0,
-        y: alternativeStandingCharge
-    }, {
-        x: breakEven,
-        y: alternativeStandingCharge + (breakEven * alternativeUnitRate)
-    }, {
-        x: averageUsage,
-        y: alternativeStandingCharge + (averageUsage * alternativeUnitRate)
-    }, {
-        x: (averageUsage + breakEven) * 3,
-        y: alternativeStandingCharge + ((averageUsage + breakEven) * 3 * alternativeUnitRate)
-    }];
+    const alternativePoints = [
+        {
+            x: 0,
+            y: alternativeStandingCharge
+        }, {
+            x: breakEven,
+            y: alternativeStandingCharge + (breakEven * alternativeUnitRate)
+        }, {
+            x: averageUsage,
+            y: alternativeStandingCharge + (averageUsage * alternativeUnitRate)
+        }, {
+            x: (averageUsage + breakEven) * 3,
+            y: alternativeStandingCharge + ((averageUsage + breakEven) * 3 * alternativeUnitRate)
+        }
+    ];
     alternativePoints.sort(p => p.x);
     chart.data.datasets[0].data = currentPoints;
     chart.data.datasets[1].data = alternativePoints;
@@ -107,7 +119,7 @@ const chart = new Chart(ctx, {
             borderWidth: 1,
             showLine: true
         }, {
-            label: 'New',
+            label: 'Alternative',
             data: [],
             borderWidth: 1,
             showLine: true
