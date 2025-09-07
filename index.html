@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy tariff comparison</title>
+    <link rel="stylesheet" href="css/pico.lime.min.css">
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+        footer {
+            background-color: light-dark(rgb(165, 214, 1), rgb(87, 116, 0));
+        }
+        footer > div > p > a {
+            color: light-dark(rgb(77, 102, 0), rgb(193, 243, 53));
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Energy tariff comparison</h1>
+        <p>Use this page to work out the break-even point between two energy tariffs with differing unit rates and
+            standing charges.</p>
+        <form>
+            <fieldset class="grid">
+                <label>Your current tariff
+                    <input id="current-unit-rate" placeholder="pence per kWh" aria-label="Current unit rate in pence per kilowatt hour" type="text" inputmode="numeric" />
+                    <small>Unit rate</small>
+                </label>
+                <label>&nbsp;
+                    <input id="current-standing-charge" placeholder="pence" aria-label="Current standing charge" type="text" inputmode="numeric" />
+                    <small>Standing charge</small>
+                </label>
+            </fieldset>
+            <fieldset class="grid">
+                <label>Alternative tariff
+                    <input id="alternative-unit-rate" placeholder="pence per kWh" aria-label="Alternative unit rate in pence per kilowatt hour" type="text" inputmode="numeric" />
+                    <small>Unit rate</small>
+                </label>
+                <label>&nbsp;
+                    <input id="alternative-standing-charge" placeholder="pence" aria-label="Alternative standing charge" type="text" inputmode="numeric" />
+                    <small>Standing charge</small>
+                </label>
+            </fieldset>
+        </form>
+        <p id="result-text">&nbsp;</p>
+    </main>
+    <footer>
+        <div class="container">
+            <p>Just because a tariff might appear cheaper, it doesn't tell the full story. Suppliers might offer incentives for you to switch.</p>
+            <p>Speaking of incentives, get £50 of credit when you switch to Octopus Energy with <a href="https://share.octopus.energy/rich-lemur-232">this referral link</a>.</p>
+        </div>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
